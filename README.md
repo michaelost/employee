@@ -23,4 +23,4 @@ Draw how to organize mongodb and SQL.
 #TODO:
 
 1. create relationship table
-2. Create admin page. Implement CRUD for Lessons, Groups, Marks
+2. Create admin page. Implement CRUD for Lessons, Groups, Marks. Connect to SQL and mongoDB
