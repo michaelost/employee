@@ -19,3 +19,8 @@ Parent would like to know the schedule and achievements and what teacher was ass
 Draw how to organize mongodb and SQL.
 
 ![Screenshot](download.png)
+
+#TODO:
+
+1. create relationship table
+2. Create admin page. Implement CRUD for Lessons, Groups, Marks
