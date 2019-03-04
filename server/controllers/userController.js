@@ -1,9 +1,10 @@
+const pool = require('../db/pool');
+
 function UserController(Model) {
 
-  function getUsers(req, res) {
-    const users = Model.findAll();
+ async function getUsers(req, res) {
+    const users = await pool.query('SELECT * FROM users');
     res.send(users);
-
   }
 
   return {

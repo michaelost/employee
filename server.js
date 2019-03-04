@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+const db = require('./server/db/init.js');
 const userRouter = require('./server/routers/user');
 
 app.use(bodyParser.json());
