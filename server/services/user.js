@@ -41,8 +41,13 @@ async function addUser(user) {
   return await pool.query(formInsertQuery('users', user));
 }
 
+async function deleteUser(id) {
+  return await pool.query('DELETE FROM users WHERE id=' + id);
+}
+
 module.exports = {
   getAll,
   getById,
   addUser,
+  deleteUser,
 };

@@ -31,10 +31,20 @@ function UserController(Model) {
     }
   }
 
+  async function deleteUser(req, res) {
+    try {
+      const user = await userService.deleteUser(req.params.id);
+      res.send({ success: true });
+    } catch(err) {
+      res.status(403).send({ err });
+    }
+  }
+
   return {
     get: getUsers,
     getById,
     addUser,
+    deleteUser,
   };
 }
 
