@@ -22,9 +22,19 @@ function UserController(Model) {
    }
  }
 
+  async function addUser(req, res) {
+    try {
+      const user = await userService.addUser(req.body);
+      res.send({ user });
+    } catch(err) {
+      res.status(403).send({ err });
+    }
+  }
+
   return {
     get: getUsers,
     getById,
+    addUser,
   };
 }
 
