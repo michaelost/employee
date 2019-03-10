@@ -18,6 +18,7 @@ function UserController(Model) {
      const user = await userService.getById(req.params.id);
      res.send({ user });
    } catch(err) {
+     console.log('err', err);
      res.sendStatus(500);
    }
  }
@@ -36,6 +37,7 @@ function UserController(Model) {
       const user = await userService.deleteUser(req.params.id);
       res.send({ success: true });
     } catch(err) {
+      console.log('err', err);
       res.status(403).send({ err });
     }
   }

@@ -1,4 +1,5 @@
 const pool = require('../db/pool');
+const queryBuilder = require('../helpers/queryBuilder');
 
 const pgQueries = {
   selectAll: 'SELECT name, role from users',
@@ -18,42 +19,28 @@ function convertQueryStringToSelectCondition(query) {
   return pgQueries.selectAll;
 }
 
-const getValues = (object) => Object.values(object).map(el => `'${el}'`).join(',');
-const getKeys = (object) => Object.keys(object).map(el => `${el}`).join(',');
-const formUpsertQuery = (tableName, item) => (`${formInsertQuery(tableName, item)} on conflict(id) do update set (${getKeys(item)}) = (${getValues(item)})`);
-
-function formInsertQuery (tableName, item) {
-  const values = getValues(item);
-  const columns = Object.keys(item);
-  return `INSERT INTO ${tableName}(${columns}) values(${values})`;
-}
-
 async function getAll(query) {
   return await pool.query(convertQueryStringToSelectCondition(query));
 }
 
 async function getById(id) {
-  return await pool.query('SELECT name, role FROM users WHERE id=' + id);
+  return await pool.query(queryBuilder.getById('users', ['name', 'role'], id));
 }
 
 async function addUser(user) {
-  const { name, role } = user;
-  if (!role && !name) {
-    return Promise.reject('invalid input: missing fields (name or role)');
-  }
-  return await pool.query(formInsertQuery('users', user));
+  return !user.role || !user.name ?
+    Promise.reject('invalid input: missing fields (name or role)') :
+    await pool.query(queryBuilder.insert('users', user));
 }
 
 async function deleteUser(id) {
-  return await pool.query('DELETE FROM users WHERE id=' + id);
+  return await pool.query(queryBuilder.deleteById('users', id));
 }
 
 async function updateUser(id, user) {
-  if (!id && !user) {
-    return Promise.reject('invalid input: missing id or fields to update');
-  }
-  const upsertQuery = formUpsertQuery('users', { ...user, id });
-  return pool.query(upsertQuery);
+  return (!id || !user) ?
+    Promise.reject('invalid input: missing id or fields to update') :
+    pool.query(queryBuilder.upsert('users', { ...user, id }));
 }
 
 module.exports = {
