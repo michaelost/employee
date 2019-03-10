@@ -6,7 +6,6 @@ const pgQueries = {
 
 function convertQueryStringToSelectCondition(query) {
   const { name, role } = query;
-  debugger;
   if (name || role) {
     let condition = '';
     if (name && role) {
@@ -19,8 +18,12 @@ function convertQueryStringToSelectCondition(query) {
   return pgQueries.selectAll;
 }
 
+const getValues = (object) => Object.values(object).map(el => `'${el}'`).join(',');
+const getKeys = (object) => Object.keys(object).map(el => `${el}`).join(',');
+const formUpsertQuery = (tableName, item) => (`${formInsertQuery(tableName, item)} on conflict(id) do update set (${getKeys(item)}) = (${getValues(item)})`);
+
 function formInsertQuery (tableName, item) {
-  const values = Object.values(item).map(el => `'${el}'`).join(',');
+  const values = getValues(item);
   const columns = Object.keys(item);
   return `INSERT INTO ${tableName}(${columns}) values(${values})`;
 }
@@ -45,9 +48,18 @@ async function deleteUser(id) {
   return await pool.query('DELETE FROM users WHERE id=' + id);
 }
 
+async function updateUser(id, user) {
+  if (!id && !user) {
+    return Promise.reject('invalid input: missing id or fields to update');
+  }
+  const upsertQuery = formUpsertQuery('users', { ...user, id });
+  return pool.query(upsertQuery);
+}
+
 module.exports = {
   getAll,
   getById,
   addUser,
   deleteUser,
+  updateUser,
 };

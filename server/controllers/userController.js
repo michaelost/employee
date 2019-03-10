@@ -40,11 +40,22 @@ function UserController(Model) {
     }
   }
 
+  async function updateUser(req, res) {
+    try {
+      const user = await userService.updateUser(req.params.id, req.body);
+      res.send({ success: true });
+    } catch(err) {
+      console.log('err', err);
+      res.status(403).send({ err });
+    }
+  }
+
   return {
     get: getUsers,
     getById,
     addUser,
     deleteUser,
+    updateUser,
   };
 }
 
