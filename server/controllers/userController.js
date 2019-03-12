@@ -1,56 +1,29 @@
 const pool = require('../db/pool');
 const userService = require('../services/user');
 
+const sendResponse = res => result => res.send({ result });
+const handleError = res => error => res.status(403).send({ error });
+
 function UserController(Model) {
+ const getUsers = (req, res) => userService.getAll(req.query)
+   .then(sendResponse(res))
+   .catch(handleError(res));
 
- async function getUsers(req, res) {
-   try {
-     const users = await userService.getAll(req.query);
-     res.send({ users });
-   } catch(err) {
-     console.log('err', err);
-     res.sendStatus(500);
-   }
- } 
+ const getById = (req, res) => userService.getById(req.params.id)
+   .then(sendResponse(res))
+   .catch(handleError(res));
 
- async function getById(req, res) {
-   try {
-     const user = await userService.getById(req.params.id);
-     res.send({ user });
-   } catch(err) {
-     console.log('err', err);
-     res.sendStatus(500);
-   }
- }
+ const addUser = (req, res) => userService.addUser(req.body)
+   .then(sendResponse(res))
+   .catch(handleError(res));
 
-  async function addUser(req, res) {
-    try {
-      const user = await userService.addUser(req.body);
-      res.send({ user });
-    } catch(err) {
-      res.status(403).send({ err });
-    }
-  }
+ const deleteUser = (req, res) => userService.deleteUser(req.params.id)
+   .then(sendResponse(res))
+   .catch(handleError(res));
 
-  async function deleteUser(req, res) {
-    try {
-      const user = await userService.deleteUser(req.params.id);
-      res.send({ success: true });
-    } catch(err) {
-      console.log('err', err);
-      res.status(403).send({ err });
-    }
-  }
-
-  async function updateUser(req, res) {
-    try {
-      const user = await userService.updateUser(req.params.id, req.body);
-      res.send({ success: true });
-    } catch(err) {
-      console.log('err', err);
-      res.status(403).send({ err });
-    }
-  }
+ const updateUser = (req, res) => userService.updateUser(req.params.id, req.body)
+   .then(sendResponse(res))
+   .catch(handleError(res));
 
   return {
     get: getUsers,
