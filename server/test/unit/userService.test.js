@@ -1,5 +1,5 @@
 describe('userService test', function () {
   it('should add user', function () {
-    console.log('first test');
+    console.log('first unit test');
   });
 })
