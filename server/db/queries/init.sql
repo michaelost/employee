@@ -1,6 +1,5 @@
-DROP TABLE users;
-DROP TABLE groups;
-
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS groups;
 
 CREATE SEQUENCE users_id_seq;
 CREATE SEQUENCE groups_id_seq;
@@ -19,6 +18,8 @@ CREATE TABLE IF NOT EXISTS groups (
 
 ALTER SEQUENCE groups_id_seq 
 OWNED BY groups.id;
+
+
 
 INSERT INTO users (role, name) VALUES ('parent', 'michaelost');
 INSERT INTO users (role, name) VALUES ('parent', 'mimimi');

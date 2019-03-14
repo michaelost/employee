@@ -1,6 +1,15 @@
 module.exports = {
   test: {
-    port: 8000,
+    server: {
+      port: 8000,
+    },
+    db: {
+      user: 'postgres',
+      password: '123qweasdzxcv',
+      host: 'localhost',
+      database: 'test',
+      port: 5432,
+    }
   },
   dev: {
     server: {
@@ -10,7 +19,7 @@ module.exports = {
       user: 'postgres',
       password: '123qweasdzxcv',
       host: 'localhost',
-      database: 'test',
+      database: 'development',
       port: 5432,
     }
   }
