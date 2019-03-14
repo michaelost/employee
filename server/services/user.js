@@ -31,7 +31,7 @@ module.exports = (connection) => {
 
   async function addUser(user) {
     return !user.role || !user.name ?
-      Promise.reject('invalid input: missing fields (name or role)') :
+      Promise.reject({ error: 'isBlank', path: '[name], [role]' }) :
       await connection.query(queryBuilder.insert('users', user));
   }
 

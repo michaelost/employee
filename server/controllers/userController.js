@@ -2,7 +2,9 @@ const connection = require('../db/createConnection');
 const userService = require('../services/user')(connection);
 
 const sendResponse = res => result => res.send({ result });
-const handleError = res => error => res.status(403).send({ error });
+const handleError = res => error => {
+  res.status(403).send({ error });
+}
 
 function UserController(Model) {
  const getUsers = (req, res) => userService.getAll(req.query)
