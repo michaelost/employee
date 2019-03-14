@@ -1,5 +1,5 @@
-const pool = require('../db/pool');
-const userService = require('../services/user');
+const connection = require('../db/createConnection');
+const userService = require('../services/user')(connection);
 
 const sendResponse = res => result => res.send({ result });
 const handleError = res => error => res.status(403).send({ error });
