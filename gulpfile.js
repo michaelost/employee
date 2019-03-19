@@ -14,8 +14,8 @@ function lint() {
     .pipe(eslint.failOnError());
 }
 
-function test () {
-  return gulp.src('server/test/**/*.js', { read: false })
+function unit () {
+  return gulp.src('server/test/unit/**/*.js', { read: false })
     .pipe(mocha({reporter: 'spec'}));
 };
 
@@ -30,6 +30,6 @@ function integration () {
 
 module.exports = {
   lint,
-  test,
+  unit,
   integration,
 }

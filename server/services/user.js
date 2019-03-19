@@ -4,7 +4,7 @@ const queryBuilder = require('../helpers/queryBuilder');
 
 module.exports = (connection) => {
   const pgQueries = {
-    selectAll: 'SELECT name, role from users',
+    selectAll: 'SELECT name, role FROM users',
   };
 
   function convertQueryStringToSelectCondition(query) {
