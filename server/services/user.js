@@ -26,6 +26,9 @@ module.exports = (connection) => {
   }
 
   async function getById(id) {
+    if (!id) {
+      return Promise.reject('invalid input: missing id');
+    }
     return await connection.query(queryBuilder.getById('users', ['name', 'role'], id));
   }
 

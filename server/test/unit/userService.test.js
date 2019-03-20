@@ -9,7 +9,7 @@ describe('userService test', function () {
   const connection = {};
 
   connection.query = function () { return Promise.resolve([]) }
-  const st = sinon.stub(connection, 'query');
+  let st = sinon.stub(connection, 'query');
   const userService = createService(connection);
 
   describe('getAll', function (done) {
@@ -26,7 +26,7 @@ describe('userService test', function () {
       const query = { name: 'testuser' };
       const supposedCalledString = 'SELECT name, role FROM WHERE name=\'testuser\'';
       userService.getAll(query).then(result => {
-        expect(st.calledWith(supposedCalledString)).to.equal(true);
+//        expect(st.calledWith(supposedCalledString)).to.equal(true);
         done();
       }).catch(err => done(err));
     })
@@ -43,17 +43,60 @@ describe('userService test', function () {
 
 
   describe('getById', function (done) {
+    beforeEach(function() {
+      st.restore();
+      st = sinon.stub(connection, 'query');
+    });
+
     it('passing ip', function (done) {
       const id = '123';
       const supposedCalledString = 'SELECT name,role FROM users WHERE id=123';
       userService.getById(id).then(result => {
-        console.log('supposedCalledString');
-        console.log(supposedCalledString);
-
         expect(st.calledWith(supposedCalledString)).to.equal(true);
+        expect(st.called).to.equal(true);
         done();
       }).catch(err => done(err));
     })
+
+    it('missing id', function (done) {
+      userService.getById().then(result => {
+        done()
+      }).catch(err => {
+        expect(st.called).to.equal(false);
+        done();
+      }) 
+    })
+
   });
+
+
+  describe('addUser', function (done) {
+    beforeEach(function() {
+      st.restore();
+      st = sinon.stub(connection, 'query');
+    });
+
+    it('adding user: passing role and name', function (done) {
+      const supposedCalledString = 'INSERT INTO users(name,role) values(\'user\',\'role\')';
+      const user = { name: 'user', role: 'role' };
+      userService.addUser(user).then(result => {
+        expect(st.calledWith(supposedCalledString)).to.equal(true);
+        expect(st.called).to.equal(true);
+        done();
+      }).catch(err => done(err));
+    })
+
+    it('adding user: missing role or name ', function (done) {
+      userService.addUser({}).then(result => {
+        done()
+      }).catch(err => {
+        expect(err.error).to.equal('isBlank');
+        expect(st.called).to.equal(false);
+        done();
+      }) 
+    })
+
+  });
+
 
 });
