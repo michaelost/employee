@@ -69,7 +69,6 @@ describe('userService test', function () {
 
   });
 
-
   describe('addUser', function (done) {
     beforeEach(function() {
       st.restore();
