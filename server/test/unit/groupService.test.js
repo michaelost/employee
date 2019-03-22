@@ -32,5 +32,15 @@ describe('userService test', function () {
         done(err);
       });
     });
+
+    it('should delete group by name', function (done) {
+      const supposedCalledString = 'DELETE FROM groups WHERE name=user';
+      groupService.deleteBy('name', 'user').then(result => {
+        expect(st.calledWith(supposedCalledString)).to.equal(true);
+        done();
+      }).catch(err => {
+        done(err);
+      });
+    });
   });
 });

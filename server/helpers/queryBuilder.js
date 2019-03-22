@@ -14,6 +14,8 @@ const QueryBuilder = {
   insert: (tableName, item) => (formInsertQuery(tableName, item)),
   getById: (tableName, fields, id) => (`SELECT ${fields.join(',')} FROM ${tableName} WHERE id=${id}`),
   deleteById: (tableName, id) => (`DELETE FROM ${tableName}  WHERE id=${id}`),
+  deleteBy: (tableName, propName, value) => (`DELETE FROM ${tableName} WHERE ${propName}=${value}`),
+// TODO create updateBy method;
   upsert: (tableName, item) => (formUpsertQuery(tableName, item)),
 };
 

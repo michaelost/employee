@@ -11,7 +11,15 @@ module.exports = (connection) => {
     return await connection.query(selectQuery);
   }
 
+  async function deleteBy(propName, value) {
+    if (propName, value) {
+      return await connection.query(queryBuilder.deleteBy('groups', propName, value));
+    }
+    return Promise.reject({ error: 'isBlank', path: '[]' });
+  }
+
   return {
     getAll,
+    deleteBy,
   };
 }
