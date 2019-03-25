@@ -1,25 +1,31 @@
 const express = require('express');
 const userRouter = express.Router();
 
+const {
+  retrieveData,
+  handleError,
+  formatResponseMiddleware,
+} = require('../middlewares/user');
+
 const User = require('../models/user');
 
 const userController = require('../controllers/userController')(User);
 
+const retrieve = {
+  usersGet: retrieveData(['req.query']),
+  usersGetById: retrieveData(['req.params.id']),
+  usersPost: retrieveData(['req.body']),
+  usersDelete: retrieveData(['req.params.id']),
+  updateUser: retrieveData(['req.params.id', 'req.body']),
+}
 
-userRouter.get('/', userController.get);
-userRouter.get('/:id', userController.getById);
-userRouter.post('/', userController.addUser);
-userRouter.delete('/:id', userController.deleteUser);
-userRouter.put('/:id', userController.updateUser);
+userRouter.get('/', retrieve.usersGet, userController.get);
+userRouter.get('/:id', retrieve.usersGetById, userController.getById);
+userRouter.post('/', retrieve.usersPost, userController.addUser);
+userRouter.delete('/:id', retrieve.usersDelete, userController.deleteUser);
+userRouter.put('/:id', retrieve.updateUser, userController.updateUser);
 
-
-//userRouter.use(formatResponseMiddleware);
-/*function formatResponseMiddleware (req, res, next) {
-  if (res.body.result && res.body.result.rows) {
-    res.body = res.body.result.rows;
-  }
-  next();
-};
-*/
+userRouter.use(formatResponseMiddleware);
+userRouter.use(handleError);
 
 module.exports = userRouter;

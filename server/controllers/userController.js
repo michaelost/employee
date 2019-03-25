@@ -6,33 +6,31 @@ const handleError = res => error => {
   res.status(403).send({ error });
 }
 
+
+const controllerWrapper = (callback) => (
+  async (req, res, next) => {
+    try {
+      req.locals.data = await callback(req.locals.data);
+      next();
+    } catch(err) {
+      next(err);
+    }
+  }
+);
+
 function UserController(Model) {
- const getUsers = (req, res) => userService.getAll(req.query)
-   .then(sendResponse(res))
-   .catch(handleError(res));
-
- const getById = (req, res) => userService.getById(req.params.id)
-   .then(sendResponse(res))
-   .catch(handleError(res));
-
- const addUser = (req, res) => userService.addUser(req.body)
-   .then(sendResponse(res))
-   .catch(handleError(res));
-
- const deleteUser = (req, res) => userService.deleteUser(req.params.id)
-   .then(sendResponse(res))
-   .catch(handleError(res));
-
- const updateUser = (req, res) => userService.updateUser(req.params.id, req.body)
-   .then(sendResponse(res))
-   .catch(handleError(res));
+ const getUsers = (query) => userService.getAll(query);
+ const getById = ({ id }) =>  userService.getById(id);
+ const addUser = (user) =>  userService.addUser(user);
+ const deleteUser = ({ id }) => userService.deleteUser(id);
+ const updateUser = ({ id, data }) => userService.updateUser(id, data);
 
   return {
-    get: getUsers,
-    getById,
-    addUser,
-    deleteUser,
-    updateUser,
+    get: controllerWrapper(getUsers),
+    getById: controllerWrapper(getById),
+    addUser: controllerWrapper(addUser),
+    deleteUser: controllerWrapper(deleteUser),
+    updateUser: controllerWrapper(updateUser),
   };
 }
 

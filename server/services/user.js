@@ -21,7 +21,7 @@ module.exports = (connection) => {
     return pgQueries.selectAll;
   }
 
-  async function getAll(query) {
+  async function getAll({ query }) {
     return await connection.query(convertQueryStringToSelectCondition(query));
   }
 
