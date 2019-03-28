@@ -20,12 +20,17 @@ const retrieveData = (params = []) => {
 
 
 const formatResponseMiddleware = (req, res, next) => {
-  req.send(req.locals.data)
+  const { rows } = req.locals.data;
+  if (rows) {
+    res.json({ data: rows });
+  }
+  res.send({});
 };
 
-const handleError = (req, res, err, next) => {
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-  console.log('err', err);
+const handleError = (err, req, res, next) => {
+  if (err.error == 'isBlank') {
+    res.status(403).send({ data: err });
+  }
 };
 
 module.exports = {

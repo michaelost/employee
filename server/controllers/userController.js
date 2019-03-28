@@ -13,6 +13,8 @@ const controllerWrapper = (callback) => (
       req.locals.data = await callback(req.locals.data);
       next();
     } catch(err) {
+      console.log('catch...');
+      console.log('err', err);
       next(err);
     }
   }
@@ -21,7 +23,7 @@ const controllerWrapper = (callback) => (
 function UserController(Model) {
  const getUsers = (query) => userService.getAll(query);
  const getById = ({ id }) =>  userService.getById(id);
- const addUser = (user) =>  userService.addUser(user);
+ const addUser = (data) =>  userService.addUser(data.body);
  const deleteUser = ({ id }) => userService.deleteUser(id);
  const updateUser = ({ id, data }) => userService.updateUser(id, data);
 
