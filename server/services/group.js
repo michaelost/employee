@@ -18,8 +18,15 @@ module.exports = (connection) => {
     return Promise.reject({ error: 'isBlank', path: '[]' });
   }
 
+  async function updateGroup(id, group) {
+    return (!id || !group) ?
+      Promise.reject('invalid input: missing id or fields to update') :
+      connection.query(queryBuilder.upsert('groups', { ...group, id }));
+  }
+
   return {
     getAll,
     deleteBy,
+    updateGroup,
   };
 }

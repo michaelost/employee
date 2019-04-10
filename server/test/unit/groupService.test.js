@@ -42,5 +42,25 @@ describe('userService test', function () {
         done(err);
       });
     });
+
+    it('should update group by id ', function (done) {
+      const supposedCalledString = 'INSERT INTO groups(name,id) values(\'group1\',\'1\') on conflict(id) do update set (name,id) = (\'group1\',\'1\')';
+      groupService.updateGroup(1, { name: 'group1' }).then(result => {
+        expect(st.calledWith(supposedCalledString)).to.equal(true);
+        done();
+      }).catch(err => {
+        done(err);
+      });
+    });
+
+    it('should fail on update group by id (missed id) ', function (done) {
+      groupService.updateGroup(null, { name: 'group1' }).then(result => {
+        done();
+      }).catch(err => {
+        expect(err).to.equal('invalid input: missing id or fields to update');
+        done();
+      });
+    });
+
   });
 });
