@@ -4,6 +4,7 @@ const getApp = require('../app.js');
 const app = getApp();
 
 describe('userService test', function () {
+
   it('POST /users invalid request', function () {
     request(app)
       .post('/users')
@@ -12,6 +13,7 @@ describe('userService test', function () {
         if (err) throw err;
       });
   });
+
 
   it('POST /users valid request', function () {
     request(app)
@@ -25,11 +27,13 @@ describe('userService test', function () {
       })
   });
 
+
   it('GET /users - get all users', function () {
     request(app)
       .get('/users')
       .expect(200)
       .then(response => {
+        console.log('response', response.text);
         expect(response.status).to.equal(200);
       })
   });
