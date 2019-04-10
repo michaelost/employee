@@ -11,6 +11,13 @@ module.exports = (connection) => {
     return await connection.query(selectQuery);
   }
 
+  async function getById(id) {
+    if (!id) {
+      return Promise.reject('invalid input: missing id');
+    }
+    return await connection.query(queryBuilder.getById('groups', ['name'], id));
+  }
+
   async function deleteBy(propName, value) {
     if (propName, value) {
       return await connection.query(queryBuilder.deleteBy('groups', propName, value));
@@ -24,9 +31,17 @@ module.exports = (connection) => {
       connection.query(queryBuilder.upsert('groups', { ...group, id }));
   }
 
+  async function addGroup(group) {
+    return !group.name ?
+      Promise.reject({ error: 'isBlank', path: '[name]' }) :
+      await connection.query(queryBuilder.insert('groups', group));
+  }
+
   return {
     getAll,
+    getById,
     deleteBy,
     updateGroup,
+    addGroup,
   };
 }

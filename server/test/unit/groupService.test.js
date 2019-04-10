@@ -62,5 +62,15 @@ describe('userService test', function () {
       });
     });
 
+    it('shouldn add new group', function (done) {
+      const supposedCalledString ='INSERT INTO groups(name) values(\'group1\')';
+      groupService.addGroup({ name: 'group1' }).then(result => {
+        expect(st.calledWith(supposedCalledString)).to.equal(true);
+        done();
+      }).catch(err => {
+        done(err);
+      });
+    });
+
   });
 });

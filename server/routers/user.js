@@ -7,9 +7,7 @@ const {
   formatResponseMiddleware,
 } = require('../middlewares/user');
 
-const User = require('../models/user');
-
-const userController = require('../controllers/userController')(User);
+const userController = require('../controllers/userController')();
 
 const retrieve = {
   usersGet: retrieveData(['req.query']),
