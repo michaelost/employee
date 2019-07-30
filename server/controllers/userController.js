@@ -2,10 +2,10 @@ const connection = require('../db/createConnection');
 const userService = require('../services/user')(connection);
 
 const sendResponse = res => result => res.send({ result });
+
 const handleError = res => error => {
   res.status(403).send({ error });
 }
-
 
 const controllerWrapper = (callback) => (
   async (req, res, next) => {
@@ -13,8 +13,6 @@ const controllerWrapper = (callback) => (
       req.locals.data = await callback(req.locals.data);
       next();
     } catch(err) {
-      console.log('catch...');
-      console.log('err', err);
       next(err);
     }
   }
