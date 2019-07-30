@@ -9,6 +9,8 @@ const handleError = res => error => {
 
 const controllerWrapper = (callback) => (
   async (req, res, next) => {
+    console.log('req.body', req.body);
+    console.log('==================');
     try {
       req.locals.data = await callback(req.locals.data);
       next();
@@ -18,7 +20,7 @@ const controllerWrapper = (callback) => (
   }
 );
 
-function UserController(Model) {
+function UserController() {
  const getUsers = (query) => userService.getAll(query);
  const getById = ({ id }) =>  userService.getById(id);
  const addUser = (data) =>  userService.addUser(data.body);

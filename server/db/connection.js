@@ -1,8 +1,8 @@
-const { Pool } = require('pg')
+//const { Pool } = require('pg')
+const mongoose = require('mongoose');
 
-const createConnection = (config) => {
-  console.log('createing db connection with config database ' + config.database);
-  return new Pool(config);
-}
+const createConnection = (dbName) => {
+  return mongoose.connect(`mongodb://localhost/${dbName}`, {useNewUrlParser: true});
+};
 
 module.exports = createConnection;
