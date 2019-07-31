@@ -41,7 +41,6 @@ const auth = (req, res, next) => {
   }
   axios.post(`${config.authServer}/auth`, { token })
     .then(response => {
-      console.log('response', response);
       next();
     })
     .catch(error => {
@@ -55,7 +54,6 @@ const auth = (req, res, next) => {
 
 const formatResponseMiddleware = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  console.log('req.locals', req.locals);
   if (!req.locals || !req.locals.data) {
     res.status(404).send({});
     return;
