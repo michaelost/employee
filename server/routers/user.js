@@ -20,12 +20,6 @@ const retrieve = {
 
 userRouter.get('/', retrieve.usersGet, userController.get);
 userRouter.get('/:id', retrieve.usersGetById, userController.getById);
-/*
-userRouter.post('/',  function (req, res) {
-  console.log('req.body', req.body);
-  res.send({})
-});
-*/
 userRouter.post('/', retrieve.usersPost, userController.addUser, formatResponseMiddleware);
 userRouter.delete('/:id', retrieve.usersDelete, userController.deleteUser);
 userRouter.put('/:id', retrieve.updateUser, userController.updateUser);
