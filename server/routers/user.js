@@ -21,9 +21,8 @@ const retrieve = {
 
 userRouter.get('/', retrieve.usersGet, userController.get);
 userRouter.get('/:id', retrieve.usersGetById, userController.getById);
-//userRouter.post('/', retrieve.usersPost, auth, userController.addUser, formatResponseMiddleware);
 userRouter.post('/', auth, retrieve.usersPost, userController.addUser, formatResponseMiddleware);
-userRouter.delete('/:id', retrieve.usersDelete, userController.deleteUser);
+userRouter.delete('/:id', auth, retrieve.usersDelete, userController.deleteUser);
 userRouter.put('/:id', retrieve.updateUser, userController.updateUser);
 
 userRouter.use(formatResponseMiddleware);
