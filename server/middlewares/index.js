@@ -1,4 +1,6 @@
 const get =  require('lodash').get;
+const axios = require('axios');
+const config = require('../config/config');
 
 const handleError = (err, req, res, next) => {
   if (err.error == 'isBlank') {
@@ -30,6 +32,27 @@ const retrieveData = (params = []) => {
   }
 };
 
+const auth = (req, res, next) => {
+  const { token } = req.body;
+  if (!req.body.token) {
+    res.status(403).send({ result: 'unauthorized' });
+    return;
+  }
+
+  axios.post(`${config.authServer}/auth`, { token })
+    .then(response => {
+      res.send(response);
+    })
+    .catch(error => {
+      if (error.response) {
+        const { status, statusText } = error.response;
+        res.status(status).send({ result: statusText });
+      }
+      res.send({ error });
+    });
+
+}
+
 const formatResponseMiddleware = (req, res, next) => {
   if (!req.locals.data) {
     res.status(404).send({});
@@ -42,4 +65,5 @@ module.exports = {
   retrieveData,
   handleError,
   formatResponseMiddleware,
+  auth,
 };

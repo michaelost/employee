@@ -6,6 +6,7 @@ const {
   handleError,
   retrieveData,
   formatResponseMiddleware,
+  auth,
 } = require('../middlewares');
 
 const userController = require('../controllers/userController')();
@@ -20,7 +21,7 @@ const retrieve = {
 
 userRouter.get('/', retrieve.usersGet, userController.get);
 userRouter.get('/:id', retrieve.usersGetById, userController.getById);
-userRouter.post('/', retrieve.usersPost, userController.addUser, formatResponseMiddleware);
+userRouter.post('/', retrieve.usersPost, auth, userController.addUser, formatResponseMiddleware);
 userRouter.delete('/:id', retrieve.usersDelete, userController.deleteUser);
 userRouter.put('/:id', retrieve.updateUser, userController.updateUser);
 

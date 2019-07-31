@@ -9,7 +9,7 @@ module.exports = {
     server: {
       port: 3000,
     },
-    dbName: 'dev'
-
-  }
+    dbName: 'dev',
+  },
+  authServer: 'http://localhost:8080'
 };
