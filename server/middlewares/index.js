@@ -3,6 +3,7 @@ const axios = require('axios');
 const config = require('../config/config');
 
 const handleError = (err, req, res, next) => {
+  console.log('err', err)
   if (err.error == 'isBlank') {
     res.status(403).send({ data: err });
     return;
@@ -53,11 +54,13 @@ const auth = (req, res, next) => {
 }
 
 const formatResponseMiddleware = (req, res, next) => {
-  if (!req.locals.data) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  console.log('req.locals', req.locals);
+  if (!req.locals || !req.locals.data) {
     res.status(404).send({});
     return;
   }
-  res.send(req.locals.data);
+  res.send(req.locals && req.locals.data);
 }
 
 module.exports = {
