@@ -38,7 +38,6 @@ const auth = (req, res, next) => {
     res.status(403).send({ result: 'unauthorized' });
     return;
   }
-
   axios.post(`${config.authServer}/auth`, { token })
     .then(response => {
       res.send(response);
@@ -50,7 +49,6 @@ const auth = (req, res, next) => {
       }
       res.send({ error });
     });
-
 }
 
 const formatResponseMiddleware = (req, res, next) => {
