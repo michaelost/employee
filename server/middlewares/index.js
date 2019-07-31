@@ -40,7 +40,8 @@ const auth = (req, res, next) => {
   }
   axios.post(`${config.authServer}/auth`, { token })
     .then(response => {
-      res.send(response);
+      console.log('response', response);
+      next();
     })
     .catch(error => {
       if (error.response) {
